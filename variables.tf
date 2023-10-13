@@ -12,7 +12,9 @@ terraform {
 }
 
 #hetzner
-variable "hcloud_token" {}
+variable "hcloud_token" {
+  type = string
+}
 variable "name" {
   type = string
 }
@@ -36,8 +38,28 @@ variable "private_key_path" {
 }
 
 #tailscale
-variable "tailscale_client_id" {}
-variable "tailscale_client_secret" {}
+variable "reusable" {
+  type = bool
+  default = false
+}
+variable "ephemeral" {
+  type = bool
+  default = true
+}
+variable "preauthorized" {
+  type = bool
+  default = true
+}
+variable "expiry" {
+  type = number
+  default = 3600
+}
+variable "tailscale_client_id" {
+  type = string
+}
+variable "tailscale_client_secret" {
+  type = string
+}
 variable "description" {
   type = string
 }

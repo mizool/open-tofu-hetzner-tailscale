@@ -11,10 +11,10 @@ provider "tailscale" {
 
 # create auth key 
 resource "tailscale_tailnet_key" "setup_key" {
-    reusable      = false
-    ephemeral     = true
-    preauthorized = true
-    expiry        = 3600
+    reusable      = "${var.reusable}"
+    ephemeral     = "${var.ephemeral}"
+    preauthorized = "${var.preauthorized}"
+    expiry        = "${var.expiry}"
     description   = "${var.description}"
     tags = "${var.tags}"
 }
