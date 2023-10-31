@@ -35,9 +35,19 @@ variable "datacenter" {
   default = "nbg1-dc3"
   description = "The datacenter name to create the server in. nbg1-dc3, fsn1-dc14, hel1-dc2, ash-dc1 or hil-dc1"
 }
+variable "user_data" {
+  type = string
+  description = "(Optional) Cloud-Init user data to use during server creation"
+  default = ""
+}
 variable "ssh_keys" {
-    type = list(number)
+    type = list(string)
     description = "SSH key IDs or names which should be injected into the server at creation time. At least during creation time this is needed as a remote exec is neccessary for the installation of tailscale"
+}
+variable "firewall_ids" {
+  type = list(string)
+  description = "(Optional) Firewall IDs the server should be attached to on creation."
+  default = null
 }
 variable "private_key_path" {
   type = string

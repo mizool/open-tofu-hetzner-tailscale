@@ -25,6 +25,8 @@ resource "hcloud_server" "server" {
     server_type = "${var.server_type}"
     datacenter  = "${var.datacenter}"
     ssh_keys = "${var.ssh_keys}"
+    firewall_ids = "${var.firewall_ids}"
+    user_data = "${var.user_data}"
 
     connection {
         type = "ssh"
