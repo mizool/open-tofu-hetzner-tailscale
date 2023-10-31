@@ -49,10 +49,6 @@ variable "firewall_ids" {
   description = "(Optional) Firewall IDs the server should be attached to on creation."
   default = null
 }
-variable "private_key_path" {
-  type = string
-  description = "Path to the private key matching to one public key configured in ssh_keys"
-}
 
 #tailscale
 variable "reusable" {

@@ -19,6 +19,11 @@ resource "tailscale_tailnet_key" "setup_key" {
     tags = "${var.tags}"
 }
 
+locals {
+  user_data_complete = "#cloud-config\nshell: /bin/bash\nruncmd:\n- curl -fsSL https://tailscale.com/install.sh --output /tmp/install.sh\n- chmod +x /tmp/install.sh\n- /tmp/install.sh\n- tailscale up --authkey=${tailscale_tailnet_key.setup_key.key} --ssh"
+  user_data_command_only ="- curl -fsSL https://tailscale.com/install.sh --output /tmp/install.sh\n- chmod +x /tmp/install.sh\n- /tmp/install.sh\n- tailscale up --authkey=${tailscale_tailnet_key.setup_key.key} --ssh"
+}
+
 resource "hcloud_server" "server" {
     name        = "${var.name}"
     image       = "${var.image}"
@@ -26,21 +31,5 @@ resource "hcloud_server" "server" {
     datacenter  = "${var.datacenter}"
     ssh_keys = "${var.ssh_keys}"
     firewall_ids = "${var.firewall_ids}"
-    user_data = "${var.user_data}"
-
-    connection {
-        type = "ssh"
-        user = "root"
-        host = self.ipv4_address
-        private_key = file("${var.private_key_path}")
-    }
-
-    provisioner "remote-exec" {
-        inline = [
-            "curl -fsSL https://tailscale.com/install.sh --output /tmp/install.sh",
-            "chmod +x /tmp/install.sh",
-            "/tmp/install.sh",
-            "tailscale up --authkey=${tailscale_tailnet_key.setup_key.key} --ssh"
-        ]
-    }
+    user_data = var.user_data != "" ? "${var.user_data}${local.user_data_command_only}" : "${local.user_data_complete}"
 }
